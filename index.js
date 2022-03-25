@@ -17,7 +17,7 @@ self.on('interactionCreate',async(Interaction)=>{
 let Result=(Interaction.isCommand()?Commands.SlashCommand(Interaction):(Interaction.isContextMenu()?Commands.CMenuCommand():{"error":""}));
 
 /* Handle errors */
-if(Result['error'])Interaction.reply(Result['error']==='DMS'?'Sorry, You can\'t use commands in DM\'s.':'Sorry, something went wrong.');
+try{if(Result['error'])Interaction.reply(Result['error']==='DMS'?'Sorry, You can\'t use commands in DM\'s.':'Sorry, something went wrong.');}catch{};
 
 /* Log error */
 // TODO
