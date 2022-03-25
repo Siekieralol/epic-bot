@@ -127,15 +127,29 @@ console.log(`Failed to remove context menu command: ${Name}\nError: ${e}\n`);
 });
 
 /* Handle slash commands */
-exports.SlashCommand=(Interaction)=>{
+exports.SlashCommand=async(Interaction)=>{
+return(new Promise(r=>{
+try{
 /* Check if dm */
-if(!Interaction.inGuild())return({"error":"DM"});
+if(!Interaction.inGuild())r({"error":"DM"});
+}catch(e){
+/* Safely handle error */
+r({"error":"Fail","msg":e});
+};
+}));
 };
 
 /* Handle context menu commands */
-exports.CMenuCommand=(Interaction)=>{
+exports.CMenuCommand=async(Interaction)=>{
+return(new Promise(r=>{
+try{
 /* Check if dm */
-if(!Interaction.inGuild())return({"error":"DM"});
+if(!Interaction.inGuild())r({"error":"DM"});
+}catch(e){
+/* Safely handle error */
+r({"error":"Fail","msg":e});
+};
+}));
 };
 
 /* Get commands */
