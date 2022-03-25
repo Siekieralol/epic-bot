@@ -1,6 +1,7 @@
 /* Variables */
 let Commands={};
 let CMCommands={};
+let CommandNames={};
 let CWatcher=require('chokidar').watch('./Commands',{atomic:true,ignoreInitial:true,usePolling:true,interval:250});
 let CMWatcher=require('chokidar').watch('./Context menu commands',{atomic:true,ignoreInitial:true,usePolling:true,interval:250});
 let fs=require('fs');
@@ -15,6 +16,7 @@ fs.readdirSync(`./Commands/${Category}`).forEach(Command=>{
 /* Add to category */
 try{
 Commands[Category][Command.slice(0,Command.length-3)]=require(`./Commands/${Category}/${Command}`);
+CommandNames[Command.slice(0,Command.length-3)]=Category;
 }catch(e){
 /* Log error */
 console.log(`Failed to load command: ${Command}\nError: ${e}\n`);
@@ -42,6 +44,7 @@ let Name=a.slice(9).split('\\')[1];
 /* Add to category */
 try{
 Commands[Category][Name.slice(0,Name.length-3)]=require(`./Commands/${Category}/${Name}`);
+CommandNames[Name.slice(0,Command.length-3)]=Category;
 console.log(`Added command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -58,6 +61,7 @@ let Name=a.slice(9).split('\\')[1];
 /* Update in category */
 try{
 Commands[Category][Name.slice(0,Name.length-3)]=require(`./Commands/${Category}/${Name}`);
+CommandNames[Name.slice(0,Name.length-3)]=Category;
 console.log(`Updated command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -74,6 +78,7 @@ let Name=a.slice(9).split('\\')[1];
 /* Remove from category */
 try{
 delete Commands[Category][Name.slice(0,Name.length-3)];
+delete CommandNames[Name.slice(0,Name.length-3)];
 console.log(`Removed command: ${Name}`);
 }catch(e){
 /* Log error */
