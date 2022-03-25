@@ -1,5 +1,6 @@
 /* Imports */
 let Discord=require('discord.js');
+let Commands=require('./Commands');
 require('dotenv').config();
 
 /* Variables */
@@ -11,8 +12,15 @@ console.log('Bot ready');
 });
 
 /* Handle interactions */
-self.on('interactionCreate',async()=>{
+self.on('interactionCreate',async(Interaction)=>{
+/* Handle */
+let Result=(Interaction.isCommand()?Commands.SlashCommand(Interaction):(Interaction.isContextMenu()?Commands.CMenuCommand():{"error":""}));
 
+/* Handle errors */
+if(Result['error'])Interaction.reply(Result['error']==='DMS'?'Sorry, You can\'t use commands in DM\'s.':'Sorry, something went wrong.');
+
+/* Log error */
+// TODO
 });
 
 /* Login */
