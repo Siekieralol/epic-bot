@@ -12,12 +12,12 @@ console.log('Bot ready');
 });
 
 /* Handle interactions */
-self.on('interactionCreate',async(Interaction)=>{
+self.on('interactionCreate',(Interaction)=>{
 /* Handle */
-let Result=(Interaction.isCommand()?Commands.SlashCommand(Interaction):(Interaction.isContextMenu()?Commands.CMenuCommand():{"error":""}));
+let Result=(Interaction.isCommand()?Commands.SlashCommand(Interaction):(Interaction.isContextMenu()?Commands.CMenuCommand(Interaction):{"error":""}));
 
 /* Handle errors */
-try{if(Result['error'])Interaction.reply(Result['error']==='DMS'?'Sorry, You can\'t use commands in DM\'s.':'Sorry, something went wrong.');}catch{};
+try{if(Result['error'])Interaction.reply(Result['error']==='DM'?'Sorry, You can\'t use commands in DM\'s.':'Sorry, something went wrong.');}catch{};
 
 /* Log error */
 // TODO
