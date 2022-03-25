@@ -28,7 +28,7 @@ console.log(`Failed to load command: ${Command}\nError: ${e}\n`);
 fs.readdirSync(`./Context menu commands`).forEach(Command=>{
 /* Add to category */
 try{
-Commands[Category][Command.slice(0,Command.length-3).toLowerCase()]=require(`./Context menu commands/${Command}`);
+CMCommands[Command.slice(0,Command.length-3).toLowerCase()]=require(`./Context menu commands/${Command}`);
 }catch(e){
 /* Log error */
 console.log(`Failed to load context menu command: ${Command}\nError: ${e}\n`);
@@ -93,7 +93,7 @@ let Name=a.slice(9).split('\\')[1];
 
 /* Add to category */
 try{
-CMCommands[Name.slice(0,Name.length-3).toLowerCase()]=require(`./context menu command/${Name}`);
+CMCommands[Name.slice(0,Name.length-3).toLowerCase()]=require(`./context menu commands/${Name}`);
 console.log(`Added context menu command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -108,7 +108,7 @@ let Name=a.slice(9).split('\\')[1];
 
 /* Update in category */
 try{
-CMCommands[Name.slice(0,Name.length-3).toLowerCase()]=require(`./context menu command/${Name}`);
+CMCommands[Name.slice(0,Name.length-3).toLowerCase()]=require(`./context menu commands/${Name}`);
 console.log(`Updated context menu command: ${Name}`);
 }catch(e){
 /* Log error */
