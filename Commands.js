@@ -16,7 +16,7 @@ fs.readdirSync(`./Commands/${Category}`).forEach(Command=>{
 /* Add to category */
 try{
 Commands[Category][Command.slice(0,Command.length-3)]=require(`./Commands/${Category}/${Command}`);
-CommandNames[Command.slice(0,Command.length-3)]=Category;
+CommandNames[Command.slice(0,Command.length-3).toLowerCase()]={"category":Category,"command":Commands[Category][Name.slice(0,Name.length-3)]};
 }catch(e){
 /* Log error */
 console.log(`Failed to load command: ${Command}\nError: ${e}\n`);
@@ -28,7 +28,7 @@ console.log(`Failed to load command: ${Command}\nError: ${e}\n`);
 fs.readdirSync(`./Context menu commands`).forEach(Command=>{
 /* Add to category */
 try{
-Commands[Category][Command.slice(0,Command.length-3)]=require(`./Context menu commands/${Command}`);
+Commands[Category][Command.slice(0,Command.length-3).toLowerCase()]=require(`./Context menu commands/${Command}`);
 }catch(e){
 /* Log error */
 console.log(`Failed to load context menu command: ${Command}\nError: ${e}\n`);
@@ -44,7 +44,7 @@ let Name=a.slice(9).split('\\')[1];
 /* Add to category */
 try{
 Commands[Category][Name.slice(0,Name.length-3)]=require(`./Commands/${Category}/${Name}`);
-CommandNames[Name.slice(0,Command.length-3)]=Category;
+CommandNames[Name.slice(0,Command.length-3).toLowerCase()]={"category":Category,"command":Commands[Category][Name.slice(0,Name.length-3)]};
 console.log(`Added command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -61,7 +61,7 @@ let Name=a.slice(9).split('\\')[1];
 /* Update in category */
 try{
 Commands[Category][Name.slice(0,Name.length-3)]=require(`./Commands/${Category}/${Name}`);
-CommandNames[Name.slice(0,Name.length-3)]=Category;
+CommandNames[Name.slice(0,Name.length-3).toLowerCase()]={"category":Category,"command":Commands[Category][Name.slice(0,Name.length-3)]};;
 console.log(`Updated command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -78,7 +78,7 @@ let Name=a.slice(9).split('\\')[1];
 /* Remove from category */
 try{
 delete Commands[Category][Name.slice(0,Name.length-3)];
-delete CommandNames[Name.slice(0,Name.length-3)];
+delete CommandNames[Name.slice(0,Name.length-3).toLowerCase()];
 console.log(`Removed command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -93,7 +93,7 @@ let Name=a.slice(9).split('\\')[1];
 
 /* Add to category */
 try{
-CMCommands[Name.slice(0,Name.length-3)]=require(`./context menu command/${Name}`);
+CMCommands[Name.slice(0,Name.length-3).toLowerCase()]=require(`./context menu command/${Name}`);
 console.log(`Added context menu command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -108,7 +108,7 @@ let Name=a.slice(9).split('\\')[1];
 
 /* Update in category */
 try{
-CMCommands[Name.slice(0,Name.length-3)]=require(`./context menu command/${Name}`);
+CMCommands[Name.slice(0,Name.length-3).toLowerCase()]=require(`./context menu command/${Name}`);
 console.log(`Updated context menu command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -123,7 +123,7 @@ let Name=a.slice(9).split('\\')[1];
 
 /* Remove from category */
 try{
-delete CMCommands[Name.slice(0,Name.length-3)];
+delete CMCommands[Name.slice(0,Name.length-3).toLowerCase()];
 console.log(`Removed context menu command: ${Name}`);
 }catch(e){
 /* Log error */
@@ -137,6 +137,9 @@ return(new Promise(r=>{
 try{
 /* Check if dm */
 if(!Interaction.inGuild())r({"error":"DM"});
+
+/* Run command */
+CommandNames[Interaction.commandName.toLowerCase()]['command'].Run(Interaction);
 }catch(e){
 /* Safely handle error */
 r({"error":"Fail","msg":e});
@@ -150,6 +153,9 @@ return(new Promise(r=>{
 try{
 /* Check if dm */
 if(!Interaction.inGuild())r({"error":"DM"});
+
+/* Run command */
+CMCommands[Interaction.commandName.toLowerCase()].Run(Interaction);
 }catch(e){
 /* Safely handle error */
 r({"error":"Fail","msg":e});
@@ -159,3 +165,6 @@ r({"error":"Fail","msg":e});
 
 /* Get commands */
 exports.GetCommands=()=>{return(Commands);};
+
+/* Get command */
+exports.GetCommand=(a)=>{return(CommandNames[a.toLowerCase()]);};
