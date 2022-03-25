@@ -23,7 +23,7 @@ console.log(`Failed to load command: ${Command}\nError: ${e}\n`);
 });
 
 /* Get context menu commands */
-fs.readdirSync(`./Context menu commands/${Category}`).forEach(Command=>{
+fs.readdirSync(`./Context menu commands`).forEach(Command=>{
 /* Add to category */
 try{
 Commands[Category][Command.slice(0,Command.length-3)]=require(`./Context menu commands/${Command}`);
@@ -128,10 +128,15 @@ console.log(`Failed to remove context menu command: ${Name}\nError: ${e}\n`);
 
 /* Handle slash commands */
 exports.SlashCommand=(Interaction)=>{
-
+/* Check if dm */
+if(!Interaction.inGuild())return({"error":"DM"});
 };
 
 /* Handle context menu commands */
 exports.CMenuCommand=(Interaction)=>{
-
+/* Check if dm */
+if(!Interaction.inGuild())return({"error":"DM"});
 };
+
+/* Get commands */
+exports.GetCommands=()=>{return(Commands);};
